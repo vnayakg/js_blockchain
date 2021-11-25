@@ -1,18 +1,46 @@
-const Blockchain = require('./blockchain.test')
-const Block = require('./block')
+const Block = require("./block");
+const cryptoHash = require("./crypto-hash");
 
-describe('Blockchain', ()=>{
-    const blockchain = new Blockchain()
+class Blockchain {
+    constructor() {
+        this.chain = [Block.genesis()];
+    }
 
-    it('contains a chain array instanc',()=>{
-        expect(blockchain.chain instanceof Array).toBe(true)
-    })
+    addBlock({ data }) {
+        const newBlock = Block.minedBlock({
+            lastBlock: this.chain[this.chain.length - 1],
+            data,
+        });
+        this.chain.push(newBlock);
+    }
+    replaceChain(chain) {
+        if (chain.length <= this.chain.length){
+            console.error('chain must be longer')
+            return
+        }
+        if (!Blockchain.isValidChain(chain)){
+            console.error("chain must be valid")
+            return
+        }
+        console.log('replacing chain with', chain)
+        this.chain = chain;
+    }
 
-    it('starts with genesis block', ()=>{
-        expect(blockchain.chain[0]).toEqual(Block.genesis())
-    })
+    static isValidChain(chain) {
+        if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis()))
+            return false;
 
-    it('adds new block to the chain',()=>{
+        for (let i = 1; i < chain.length; i++) {
+            const { timestamp, hash, data, lastHash, nonce, difficulty } = chain[i];
 
-    })
-})
+            const actualLastHash = chain[i - 1].hash;
+            if (lastHash !== actualLastHash) return false;
+
+            const actualHash = cryptoHash(timestamp, lastHash, data, nonce, difficulty);
+            if (actualHash !== hash) return false;
+        }
+        return true;
+    }
+}
+
+module.exports = Blockchain;
