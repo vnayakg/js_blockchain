@@ -4,15 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest --watchAll",
+    "start": "node index.js",
+    "start-redis": "redis-server --daemonize yes",
+    "dev": "npm run start-redis && nodemon index.js",
+    "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^23.6.0"
+    "cross-env": "^7.0.3",
+    "jest": "^23.6.0",
+    "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "hex-to-binary": "^1.0.1"
+    "express": "^4.17.1",
+    "hex-to-binary": "^1.0.1",
+    "redis": "^2.8.0",
+    "request": "^2.88.2"
   }
 }
