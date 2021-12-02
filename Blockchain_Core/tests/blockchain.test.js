@@ -1,6 +1,6 @@
-const Blockchain = require("./blockchain");
-const Block = require("./block");
-const cryptoHash = require("./crypto-hash");
+const Blockchain = require("../blockchain");
+const Block = require("../block");
+const cryptoHash = require("../crypto-hash");
 
 describe("Blockchain", () => {
     let blockchain, newChain, originalChain;
@@ -102,7 +102,9 @@ describe("Blockchain", () => {
 
                     blockchain.chain.push(badBlock);
 
-                    expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+                    expect(Blockchain.isValidChain(blockchain.chain)).toBe(
+                        false
+                    );
                 });
             });
         });

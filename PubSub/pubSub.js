@@ -37,7 +37,12 @@ class PubSub {
     }
     // publish message on given channel
     publish({ channel, message }) {
-        this.publisher.publish(channel, message);
+        this.subscriber.unsubscribe(channel, () => {
+            //temporarily unsubscribing to avoid self listening after publishing message
+            this.publisher.publish(channel, message, () => {
+                this.subscriber.subscribe(channel);
+            });
+        });
     }
     // brodcast current blockchain to blockchain channel
     broadcastChain() {
@@ -48,4 +53,4 @@ class PubSub {
     }
 }
 
-module.exports = PubSub
+module.exports = PubSub;
