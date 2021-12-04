@@ -1,5 +1,5 @@
-const Block = require('./block')
-const Blockchain = require('./blockchain')
+const Block = require('../Blockchain_Core/block')
+const Blockchain = require('../Blockchain_Core/blockchain')
 
 const blockchain = new Blockchain();
 
