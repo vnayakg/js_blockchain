@@ -2,6 +2,9 @@ const express = require("express");
 const Blockchain = require("./Blockchain_Core/blockchain");
 const PubSub = require("./app/pubSub");
 const request = require("request");
+const TransactionPool = require("./wallet/transaction-pool");
+const Wallet = require("./wallet/index");
+
 
 const app = express();
 const DEFAULT_PORT = 3001;
@@ -12,7 +15,8 @@ app.use(express.json());
 
 // creating blockchain instance
 const blockchain = new Blockchain();
-
+const transactionPool = new TransactionPool();
+const wallet = new Wallet();
 const pubsub = new PubSub({ blockchain });
 
 app.get("/api/blocks", (req, res) => {
